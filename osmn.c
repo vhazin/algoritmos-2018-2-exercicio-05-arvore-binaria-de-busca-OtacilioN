@@ -5,7 +5,6 @@ typedef struct node_s
 {
     struct node_s *left;
     struct node_s *right;
-    struct node_s *father;
     int value;
 } node;
 
@@ -40,6 +39,7 @@ int main(void)
         printf("Post:");
         printPostOrder(root);
         printf("\n\n");
+        free(root);
     }
     return 0;
 }
@@ -54,7 +54,7 @@ node *allocate(int value)
 node *planTree(int value)
 {
     node *root = allocate(value);
-    root->father = root->left = root->right = NULL;
+    root->left = root->right = NULL;
     return root;
 }
 
@@ -65,7 +65,6 @@ void insert(node *root, int value)
         if (root->left == NULL)
         {
             node *leave = allocate(value);
-            leave->father = root;
             leave->left = leave->right = NULL;
             root->left = leave;
             return;
@@ -80,7 +79,6 @@ void insert(node *root, int value)
         if (root->right == NULL)
         {
             node *leave = allocate(value);
-            leave->father = root;
             leave->left = leave->right = NULL;
             root->right = leave;
             return;
@@ -90,6 +88,7 @@ void insert(node *root, int value)
             insert(root->right, value);
         }
     }
+    return;
 }
 
 void printPreOrder(node *root)
@@ -99,6 +98,7 @@ void printPreOrder(node *root)
     printf(" %d", root->value);
     printPreOrder(root->left);
     printPreOrder(root->right);
+    return;
 }
 
 void printInOrder(node *root)
@@ -108,6 +108,7 @@ void printInOrder(node *root)
     printInOrder(root->left);
     printf(" %d", root->value);
     printInOrder(root->right);
+    return;
 }
 
 void printPostOrder(node *root)
@@ -117,4 +118,5 @@ void printPostOrder(node *root)
     printPostOrder(root->left);
     printPostOrder(root->right);
     printf(" %d", root->value);
+    return;
 }
